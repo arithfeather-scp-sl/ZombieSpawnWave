@@ -85,29 +85,37 @@ namespace ArithFeather.ZombieSpawnWave
 		{
 			if (useZombies && UnityEngine.Random.Range(0, 101) <= percentChanceToSpawnZombies)
 			{
-				if (!string.IsNullOrWhiteSpace(zombieAnnounceMessage)) Server.Map.AnnounceCustomMessage(zombieAnnounceMessage);
-
-				LoadedZombieSpawns.Shuffle();
-
-				var index = 0;
-				var LoadedSpawnsCount = LoadedZombieSpawns.Count;
-
 				var spawns = ev.PlayerList;
 				var spawnCount = spawns.Count;
-				for (int i = 0; i < spawnCount; i++)
+
+				if (spawnCount > 0)
 				{
-					var spawn = spawns[i];
-					spawn.ChangeRole(Role.SCP_049_2, true, false);
-					spawn.Teleport(LoadedZombieSpawns[index].Position);
+					if (!string.IsNullOrWhiteSpace(zombieAnnounceMessage)) Server.Map.AnnounceCustomMessage(zombieAnnounceMessage);
 
-					index++;
-					if (index == LoadedSpawnsCount)
+					LoadedZombieSpawns.Shuffle();
+
+					var index = 0;
+					var LoadedSpawnsCount = LoadedZombieSpawns.Count;
+
+					for (int i = 0; i < spawnCount; i++)
 					{
-						index = 0;
-					}
-				}
+						var spawn = spawns[i];
+						spawn.ChangeRole(Role.SCP_049_2, true, false);
+						spawn.Teleport(LoadedZombieSpawns[index].Position);
 
-				spawns.Clear();
+						index++;
+						if (index == LoadedSpawnsCount)
+						{
+							index = 0;
+						}
+					}
+
+					spawns.Clear();
+				}
+				else
+				{
+					Error("Tried to spawn players but there were none to spawn. (Possible addon conflict)");
+				}
 			}
 		}
 	}
