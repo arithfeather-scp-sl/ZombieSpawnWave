@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ArithFeather.AriToolKit;
 using ArithFeather.AriToolKit.PointEditor;
 using Exiled.API.Features;
+using MEC;
 using SpawnPoint = ArithFeather.AriToolKit.PointEditor.FixedPoint;
 
 namespace ArithFeather.ZombieSpawnWave {
@@ -40,35 +41,37 @@ namespace ArithFeather.ZombieSpawnWave {
 		private void Server_WaitingForPlayers() {
 			_useZombies = LoadedZombieSpawns.Count > 0;
 			if (!_useZombies) Log.Warn("There are no zombie spawn points.");
-			Log.Error(_useZombies);
 		}
 
 		private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev) {
-			if (_useZombies && UnityEngine.Random.Range(0, 101) <= Config.PercentChanceToSpawnZombies) {
-				Log.Error("Spawn zombs");
-				if (!string.IsNullOrWhiteSpace(Config.ZombieAnnounceMessage))
-					Cassie.Message(Config.ZombieAnnounceMessage);
+			if (!_useZombies || UnityEngine.Random.Range(0, 101) > Config.PercentChanceToSpawnZombies) return;
 
-				LoadedZombieSpawns.UnityShuffle();
+			if (!string.IsNullOrWhiteSpace(Config.ZombieAnnounceMessage))
+				Cassie.Message(Config.ZombieAnnounceMessage);
 
-				var index = 0;
-				var LoadedSpawnsCount = LoadedZombieSpawns.Count;
+			LoadedZombieSpawns.UnityShuffle();
 
-				var spawns = ev.Players;
-				var spawnCount = spawns.Count;
-				for (int i = 0; i < spawnCount; i++) {
-					var spawn = spawns[i];
-					spawn.SetRole(RoleType.Scp0492);
-					//spawn.Position = LoadedZombieSpawns[index].Position;
+			var index = 0;
+			var loadedSpawnsCount = LoadedZombieSpawns.Count;
 
-					index++;
-					if (index == LoadedSpawnsCount) {
-						index = 0;
-					}
+			var spawns = ev.Players;
+			var spawnCount = spawns.Count;
+
+			for (int i = 0; i < spawnCount; i++) {
+				var spawn = spawns[i];
+
+				spawn.SetRole(RoleType.Scp0492);
+
+				var spawnPosition = LoadedZombieSpawns[index].Position;
+				Timing.CallDelayed(0.3f, () => spawn.Position = spawnPosition);
+
+				index++;
+				if (index == loadedSpawnsCount) {
+					index = 0;
 				}
-
-				spawns.Clear();
 			}
+
+			spawns.Clear();
 		}
 
 		private void Warhead_Detonated() => _useZombies = false;
