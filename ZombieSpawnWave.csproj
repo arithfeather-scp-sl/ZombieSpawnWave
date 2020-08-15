@@ -54,6 +54,9 @@
     <Reference Include="Exiled.Updater">
       <HintPath>..\..\..\Users\dusts\AppData\Roaming\EXILED\Plugins\Exiled.Updater.dll</HintPath>
     </Reference>
+    <Reference Include="SerpentsHand">
+      <HintPath>..\..\..\Users\dusts\Downloads\SerpentsHand.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -63,10 +66,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Program Files\Unity\Hub\Editor\2019.3.10f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\Program Files\Unity\Hub\Editor\2019.3.9f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\Program Files\Unity\Hub\Editor\2019.3.10f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\Program Files\Unity\Hub\Editor\2019.3.9f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@ namespace ArithFeather.ZombieSpawnWave {
 		private const string SpawnPointFIleName = "ZombieSpawns";
 
 		public override string Author => "Arith";
-		public override Version Version => new Version("2.0");
+		public override Version Version => new Version("2.02");
 
 		public override void OnEnabled() {
 			base.OnEnabled();
@@ -40,11 +40,13 @@ namespace ArithFeather.ZombieSpawnWave {
 
 		private void Server_WaitingForPlayers() {
 			_useZombies = LoadedZombieSpawns.Count > 0;
-			if (!_useZombies) Log.Warn("There are no zombie spawn points.");
+
+			if (!_useZombies)
+				Log.Warn("There are no zombie spawn points.");
 		}
 
 		private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev) {
-			if (!_useZombies || UnityEngine.Random.Range(0, 101) > Config.PercentChanceToSpawnZombies) return;
+			if (!_useZombies || UnityEngine.Random.Range(0, 101) > Config.PercentChanceToSpawnZombies || ev.Players.Count == 0) return;
 
 			if (!string.IsNullOrWhiteSpace(Config.ZombieAnnounceMessage))
 				Cassie.Message(Config.ZombieAnnounceMessage);
