@@ -11,7 +11,7 @@ namespace ArithFeather.ZombieSpawnWave {
 		private const string SpawnPointFIleName = "ZombieSpawns";
 
 		public override string Author => "Arith";
-		public override Version Version => new Version("2.02");
+		public override Version Version => new Version("2.03");
 
 		public override void OnEnabled() {
 			base.OnEnabled();
@@ -33,12 +33,13 @@ namespace ArithFeather.ZombieSpawnWave {
 
 		private void Server_ReloadedConfigs() => _spawnPointFile = PointAPI.GetPointList(SpawnPointFIleName);
 
-		private PointList _spawnPointFile = PointAPI.GetPointList(SpawnPointFIleName);
+		private PointList _spawnPointFile;
 		private bool _useZombies;
 
 		private List<SpawnPoint> LoadedZombieSpawns => _spawnPointFile.FixedPoints;
 
 		private void Server_WaitingForPlayers() {
+			_spawnPointFile = PointAPI.GetPointList(SpawnPointFIleName);
 			_useZombies = LoadedZombieSpawns.Count > 0;
 
 			if (!_useZombies)
